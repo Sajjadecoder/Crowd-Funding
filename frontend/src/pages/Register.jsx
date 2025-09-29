@@ -329,6 +329,7 @@ export default function Register() {
                                 {/* Reset button */}
                                 <Button
                                     type="reset"
+                                    onClick={handleReset}
                                     className="flex-1 bg-gray-900 hover:bg-gray-800 text-cyan-400 font-semibold py-2 px-3 rounded-md shadow-md border border-cyan-500 transition-colors"
                                 >
                                     Reset
