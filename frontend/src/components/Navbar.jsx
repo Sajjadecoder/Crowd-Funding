@@ -81,7 +81,7 @@ export default function Navbar() {
 
               <nav className="mt-4 flex flex-col gap-3">
                 <a href="/" className="text-sm font-medium hover:text-primary">Home</a>
-                <a href="/explore" className="text-sm font-medium hover:text-primary">Explore Campaigns</a>
+                <Link to={'/all-campaigns'} className="text-sm font-medium hover:text-primary" />Explore Campaigns
                 <a href="/categories/tech" className="text-sm hover:text-primary">Tech</a>
                 <a href="/categories/art" className="text-sm hover:text-primary">Art</a>
                 <a href="/categories/education" className="text-sm hover:text-primary">Education</a>
@@ -131,7 +131,7 @@ export default function Navbar() {
         {/* Center: Desktop navigation */}
         <nav className="hidden md:flex items-center gap-20">
           <a href="/" className="text-sm font-medium hover:text-primary">Home</a>
-          <a href="/explore" className="text-sm font-medium hover:text-primary">Explore</a>
+          <Link to={"/all-campaigns"} className="text-sm font-medium hover:text-primary" >All Campaigns</Link>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <span role="button" tabIndex={0} className="text-sm font-medium inline-flex items-center gap-1 cursor-pointer hover:text-primary">
@@ -154,16 +154,7 @@ export default function Navbar() {
 
         {/* Right: Actions */}
         <div className="flex items-center gap-3">
-          <div className="hidden md:block">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault()
-                console.log("Search submitted")
-              }}
-            >
-              <Input placeholder="Search..." className="w-64 text-black" />
-            </form>
-          </div>
+          
 
           <Button asChild className="hidden md:inline-flex">
             <a href="/start">Start a Campaign</a>
