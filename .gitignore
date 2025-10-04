@@ -1,3 +1,60 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment / secret files
+.env
+.env.*
+secrets.env
+*.key
+*.pem
+
+# Jupyter
+.ipynb_checkpoints/
+
+# LangChain / Chroma vector DB and DB files
+vector_db/
+RAG/vector_db/
+chroma.sqlite3
+*.sqlite3
+*.db
+
+# Gradio / demo artifacts
+*.log
+
+# Editor directories
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node / frontend
+node_modules/
+frontend/node_modules/
+dist/
+build/
+npm-debug.log
+yarn-error.log
+
+# Packaging
+pip-wheel-metadata/
+*.egg-info/
+
+# Testing
+.pytest_cache/
+
+# Caches
+*.cache
+.cache/
 # Virtual Environment
 .venv/
 venv/
