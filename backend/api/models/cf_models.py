@@ -54,6 +54,18 @@ class Users(db.Model):
 
     def checkHashedPassword(self, plaintextPassword):
         return bcrypt.check_password_hash(self.password_hash, plaintextPassword)
+    
+    def to_dict(self):
+        return {
+            "user_id": self.user_id,
+            "username": self.username,
+            "email": self.email,
+            "role": self.role,
+        }
+    
+    @property
+    def password(self):
+        raise AttributeError("Password is not a readable attribute")
 
 
 class Campaigns(db.Model):
