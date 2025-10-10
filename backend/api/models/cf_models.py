@@ -6,6 +6,13 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
+class DonationStatus(Enum):
+    PENDING = "Pending"
+    COMPLETED = "Completed"
+    REFUNDED = "Refunded"
+    CANCELLED = "Cancelled"
+
+
 class UserRole(Enum):
     DONOR = "donor"
     CREATOR = "creator"
@@ -49,9 +56,16 @@ class Users(db.Model):
     )
 
     user_comment_likes = db.Table(
-    'user_comment_likes',
-    db.Column('user_id', db.Integer, db.ForeignKey('users.user_id'), primary_key=True),
-    db.Column('comment_id', db.Integer, db.ForeignKey('comments.comment_id'), primary_key=True)
+        "user_comment_likes",
+        db.Column(
+            "user_id", db.Integer, db.ForeignKey("users.user_id"), primary_key=True
+        ),
+        db.Column(
+            "comment_id",
+            db.Integer,
+            db.ForeignKey("comments.comment_id"),
+            primary_key=True,
+        ),
     )
 
     def setPasswordHash(self, password):
@@ -152,9 +166,7 @@ class Comments(db.Model):
     )
 
     liked_by_users = db.relationship(
-        "Users",
-        secondary="user_comment_likes",
-        back_populates="liked_comments"
+        "Users", secondary="user_comment_likes", back_populates="liked_comments"
     )
 
     def to_dict(self):
@@ -241,7 +253,7 @@ class Donations(db.Model):
     )
     amount = db.Column(db.Numeric(10, 2), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
+    status = db.Column(db.Enum(DonationStatus), default=DonationStatus.PENDING)
     user = db.relationship(
         "Users",
         backref=db.backref("donations", lazy=True, cascade="all, delete-orphan"),
@@ -369,6 +381,7 @@ class AdminReviews(db.Model):
                 else None
             ),
         }
+
 
 user_comment_likes = db.Table(
     "user_comment_likes",
