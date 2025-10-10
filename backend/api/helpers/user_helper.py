@@ -8,7 +8,6 @@ def create_user(username, password, email, role=None, profile_image=None):
     user_args = {"username": username, "email": email, "profile_image": profile_image}
 
     if role:
-        # Accept either a UserRole or a string role
         user_args["role"] = role if isinstance(role, UserRole) else UserRole(role)
 
     user = Users(**user_args)
