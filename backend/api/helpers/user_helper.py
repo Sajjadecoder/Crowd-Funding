@@ -94,14 +94,6 @@ def get_all_users():
 
 
 def get_user_by_username(username):
-    """Get user by username.
-
-    Returns:
-        dict: User data
-
-    Raises:
-        ValueError: If user not found
-    """
     user = Users.query.filter_by(username=username).first()
     if not user:
         raise ValueError(f"User with username '{username}' not found")
@@ -109,14 +101,6 @@ def get_user_by_username(username):
 
 
 def get_user_by_email(email):
-    """Get user by email.
-
-    Returns:
-        dict: User data
-
-    Raises:
-        ValueError: If user not found
-    """
     user = Users.query.filter_by(email=email).first()
     if not user:
         raise ValueError(f"User with email '{email}' not found")
