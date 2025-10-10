@@ -25,11 +25,14 @@ class CampaignCategory(Enum):
     ENVIRONMENT = "environment"
     ANIMALS = "animals"
     OTHER = "other"
+
+
 class CampaignPaymentStatus(Enum):
     PENDING = "pending"
     SUCCESSFUL = "successful"
     FAILED = "failed"
     REFUNDED = "refunded"
+
 
 class Users(db.Model):
     __tablename__ = "users"
@@ -43,6 +46,12 @@ class Users(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
+
+    user_comment_likes = db.Table(
+    'user_comment_likes',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.user_id'), primary_key=True),
+    db.Column('comment_id', db.Integer, db.ForeignKey('comments.comment_id'), primary_key=True)
     )
 
     def setPasswordHash(self, password):
@@ -140,6 +149,12 @@ class Comments(db.Model):
 
     user = db.relationship(
         "Users", backref=db.backref("comments", lazy=True, cascade="all, delete-orphan")
+    )
+
+    liked_by_users = db.relationship(
+        "Users",
+        secondary="user_comment_likes",
+        back_populates="liked_comments"
     )
 
     def to_dict(self):
@@ -354,3 +369,11 @@ class AdminReviews(db.Model):
                 else None
             ),
         }
+
+user_comment_likes = db.Table(
+    "user_comment_likes",
+    db.Column("user_id", db.Integer, db.ForeignKey("users.user_id"), primary_key=True),
+    db.Column(
+        "comment_id", db.Integer, db.ForeignKey("comments.comment_id"), primary_key=True
+    ),
+)
