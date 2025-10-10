@@ -12,29 +12,27 @@ def create_comment(user_id, campaign_id, content):
         return comment.to_dict()
     except Exception as e:
         db.session.rollback()
-        raise RuntimeError(f"Could not create a new comment: {str(e)}")
+        raise RuntimeError(f"Could not create comment: {str(e)}")
 
 
 def delete_comment(comment_id):
     comment = Comments.query.get(comment_id)
     if not comment:
-        return f"Could not find comment with comment id: {comment_id}"
+        raise ValueError(f"Could not find comment with comment id: {comment_id}")
 
     try:
         db.session.delete(comment)
         db.session.commit()
-        return f"Comment with comment id: {comment_id} was deleted successfully."
+        return {"message": f"Comment {comment_id} deleted successfully"}
     except Exception as e:
         db.session.rollback()
-        raise RuntimeError(
-            f"Could not delete comment with comment id {comment_id}: {str(e)}"
-        )
+        raise RuntimeError(f"Could not delete comment {comment_id}: {str(e)}")
 
 
 def update_comment(comment_id, updated_content):
     comment = Comments.query.get(comment_id)
     if not comment:
-        return f"Could not find comment with comment id: {comment_id}"
+        raise ValueError(f"Could not find comment with comment id: {comment_id}")
 
     comment.content = updated_content
     try:
@@ -42,13 +40,13 @@ def update_comment(comment_id, updated_content):
         return comment.to_dict()
     except Exception as e:
         db.session.rollback()
-        raise RuntimeError(f"Could not update comment with comment id: {str(e)}")
+        raise RuntimeError(f"Could not update comment: {str(e)}")
 
 
 def view_comment_by_comment_id(comment_id):
     comment = Comments.query.get(comment_id)
     if not comment:
-        return f"Could not find a comment with comment id: {comment_id}"
+        raise ValueError(f"Could not find comment with comment id: {comment_id}")
     return comment.to_dict()
 
 
@@ -67,10 +65,10 @@ def toggle_like(comment_id, user_id):
     comment = Comments.query.get(comment_id)
 
     if not user:
-        return f"User with user id: {user_id} not found."
+        raise ValueError(f"User with user id: {user_id} not found")
 
     if not comment:
-        return f"Comment with comment id: {comment_id} not found."
+        raise ValueError(f"Comment with comment id: {comment_id} not found")
 
     try:
         if comment in user.liked_comments:
@@ -84,16 +82,17 @@ def toggle_like(comment_id, user_id):
 
         db.session.commit()
         return {
-            "message": f"Comment {action} successfully.",
+            "message": f"Comment {action} successfully",
             "comment": comment.to_dict(),
         }
 
     except Exception as e:
         db.session.rollback()
-        raise RuntimeError(
-            f"Could not toggle like for comment id {comment_id}: {str(e)}"
-        )
+        raise RuntimeError(f"Could not toggle like for comment {comment_id}: {str(e)}")
+
 
 def get_total_likes(comment_id):
     comment = Comments.query.get(comment_id)
-    return comment.likes if comment else 0
+    if not comment:
+        raise ValueError(f"Comment with id {comment_id} not found")
+    return comment.likes

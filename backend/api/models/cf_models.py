@@ -356,7 +356,7 @@ class AdminReviews(db.Model):
         return {
             "review_id": self.review_id,
             "decision": self.decision.value if self.decision else None,
-            "reason": self.reason,
+            "comments": self.reason,
             "reviewed_at": self.reviewed_at,
             "admin": (
                 {"user_id": self.admin.user_id, "username": self.admin.username}
